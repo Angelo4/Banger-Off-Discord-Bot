@@ -1,4 +1,4 @@
 const config = {
-        DISCORD_TOKEN: 'OTAwNjgyODQ0MDA1ODYzNDI0.YXE4Qw.ZbcLBIWAptA5j9OaAG1YDp_EOGM',
-    };
+    DISCORD_TOKEN: process.env.DISCORD_BOT_TOKEN,
+};
 module.exports = config;
