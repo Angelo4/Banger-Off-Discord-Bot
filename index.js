@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Client, MessageEmbed } = require('discord.js');
 const { botIntents, commands, prefix } = require('./config/config.js');
 const config = require('./config/default.js');

@@ -105,3 +105,6 @@ dist
 
 # MacOS cache
 .DS_Store
+
+# Env files
+.env
