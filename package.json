@@ -1,13 +1,12 @@
 {
-  "name": "bangeroff",
+  "name": "banger-off-discord-bot",
   "version": "1.0.0",
-  "description": "",
+  "description": "Discord bot to create song polls to share your music taste!",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Angelo Alcantara",
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.39.0",
