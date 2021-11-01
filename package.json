@@ -4,16 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "app": "nodemon app",
-    "start": "node app"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.39.0",
     "discord.js": "^13.3.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.14"
   }
 }

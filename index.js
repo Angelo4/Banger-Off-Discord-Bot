@@ -1,6 +1,6 @@
 const { Client, MessageEmbed } = require('discord.js');
-const { botIntents, commands, prefix } = require('../config/config.js');
-const config = require('../config/default.js');
+const { botIntents, commands, prefix } = require('./config/config.js');
+const config = require('./config/default.js');
 
 const client = new Client({
     intents: botIntents,
@@ -37,6 +37,7 @@ const getLastMsgs = async (msg) => {
 };
 
 client.on('messageCreate', async (msg) => {
+    console.log(msg);
     if (msg.author.bot) return;
     if (!msg.content.startsWith(prefix)) return; // do nothing if command is not preceded with prefix
   
