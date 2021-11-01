@@ -19,6 +19,6 @@ const commands = {
     lastMsgs: 'last-messages',
 };
 
-const prefix = '!';
+const prefix = 'bo!';
 
 module.exports = { botIntents, commands, prefix };
