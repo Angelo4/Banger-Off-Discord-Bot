@@ -1,7 +1,36 @@
 require('dotenv').config();
 const { Client, MessageEmbed } = require('discord.js');
+const { ScanCommand } = require("@aws-sdk/client-dynamodb");
 const { botIntents, commands, prefix } = require('./config/config.js');
 const config = require('./config/default.js');
+const ddbClient = require('./dynamodb_helpers/ddbClient.js')
+
+// Set the parameters.
+const params = {
+    // Specify which items in the results are returned.
+    FilterExpression: "FirstName = :F AND LastName = :L",
+    // Define the expression attribute value, which are substitutes for the values you want to compare.
+    ExpressionAttributeValues: {
+      ":F": { S: "Angelo" },
+      ":L": { S: "Alcantara" },
+    },
+    // Set the projection expression, which the the attributes that you want.
+    ProjectionExpression: "FirstName, LastName, SongName",
+    TableName: "Test",
+  };
+  
+  async function run() {
+    try {
+      const data = await ddbClient.send(new ScanCommand(params));
+      data.Items.forEach(function (element, index, array) {
+        console.log(element);
+        return data;
+      });
+    } catch (err) {
+      console.log("Error", err);
+    }
+  }
+  run();
 
 const client = new Client({
     intents: botIntents,
