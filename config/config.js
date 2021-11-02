@@ -13,10 +13,14 @@ const botIntents = [
 ];
 
 const commands = {
-    getName: 'get-name',
-    tellJoke: 'tell-a-joke',
-    sad: 'sad',
-    lastMsgs: 'last-messages',
+    help: 'help',
+    start: 'start',
+    add: 'add',
+    vote: 'vote',
+    end: 'end',
+    abandon: 'abandon',
+    get: 'get',
+    leaderboard: 'leaderboard',
 };
 
 const prefix = 'bo!';
