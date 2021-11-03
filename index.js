@@ -7,13 +7,13 @@ const config = require('./config/default.js');
 const ddbClient = require('./datahandler/ddbClient.js');
 var SpotifyWebApi = require('spotify-web-api-node');
 
-// SPOTIFY SNIPPETS
+// SPOTIFY SNIPPETS - TODO: MOVE OUT OF index.js
 var spotifyApi = new SpotifyWebApi({
     clientId: process.env.SPOTIFY_CLIENT_ID,
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
 });
 
-// CLIENT CREDENTIAL FLOW
+// CLIENT CREDENTIAL FLOW - TODO: MOVE OUT OF index.js
 spotifyApi.clientCredentialsGrant()
     .then(
         function(data) {
@@ -39,7 +39,7 @@ spotifyApi.clientCredentialsGrant()
         }
     );
 
-// DYNAMODB SNIPPETS
+// DYNAMODB SNIPPETS - TODO: MOVE OUT OF index.js
 const params = {
     // Specify which items in the results are returned.
     FilterExpression: "FirstName = :F AND LastName = :L",
