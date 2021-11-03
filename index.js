@@ -43,23 +43,24 @@ client.on('ready', () => {
 
 client.login(config.DISCORD_TOKEN);
 
+const customEmbed = new MessageEmbed()
+    .setTitle('MONEY')
+    .setURL('https://open.spotify.com/track/7hU3IHwjX150XLoTVmjD0q') //Spotify Track URL
+    .setThumbnail('https://i.scdn.co/image/ab67616d0000b273330f11fb125bb80b760f9e19')
+    // .setImage('https://i.scdn.co/image/ab67616d0000b273330f11fb125bb80b760f9e19')
+    .setFields([
+        { name: 'Artist', value: 'LISA', inline: true },
+        { name: 'Album', value: 'LALISA', inline: true },
+		{ name: 'Song Duration', value: '2:48', inline: true },
+		{ name: 'Release Date', value: '2021-09-10', inline: true },
+    ]);
+
 client.on('messageCreate', async (msg) => {
     if (msg.author.bot) return; 
     if (!msg.content.startsWith(prefix)) return; // do nothing if command is not preceded with prefix
   
     const userCmd = msg.content.slice(prefix.length);
-  
-    // if (userCmd === commands.getName) {
-    //     msg.reply('fugg u ' + msg.author.username);
-    // } else if (userCmd === commands.tellJoke) {
-    //     msg.channel.send('HTML bla bla bla');
-    // } else if (userCmd === commands.sad) {
-    //     msg.reply("Don't be sad! This is not the end of the road");
-    // } else if (userCmd === commands.lastMsgs) {
-    //     const reply = await getLastMsgs(msg);
-    //     msg.channel.send({ embeds: reply });
-    // } else {
-    //     msg.reply('I do not understand your command');
-    // }
+    msg.reply({embeds: [customEmbed]});
+    console.log(msg.guildId);
 });
 
