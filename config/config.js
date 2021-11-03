@@ -12,17 +12,6 @@ const botIntents = [
     GUILDS,
 ];
 
-const commands = {
-    help: 'help',
-    start: 'start',
-    add: 'add',
-    vote: 'vote',
-    end: 'end',
-    abandon: 'abandon',
-    get: 'get',
-    leaderboard: 'leaderboard',
-};
-
 const prefix = 'bo!';
 
-module.exports = { botIntents, commands, prefix };
+module.exports = { botIntents, prefix };
