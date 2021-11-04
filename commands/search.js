@@ -7,7 +7,6 @@ module.exports = {
     execute(message, args, main) {
         main.spotify.searchTrack(args.join(' '))
             .then((tracks) => {
-                console.log(tracks[0]);
                 var trackEmbeddedMessages = tracks.map((track) => {
                     return new main.MessageEmbed()
                     .setTitle(track.name)
