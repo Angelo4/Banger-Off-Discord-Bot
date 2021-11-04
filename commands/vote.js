@@ -1,7 +1,7 @@
 module.exports = {
     name: '',
     desription: '',
-    aliases: '',
+    aliases: [],
     usage: '', //expected argument usage
     args: false,
     execute(message) {
