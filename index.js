@@ -5,39 +5,9 @@ const { botIntents, commands, prefix } = require('./config/config.js');
 const fs = require('fs');
 const config = require('./config/default.js');
 const ddbClient = require('./datahandler/ddbClient.js');
-var SpotifyWebApi = require('spotify-web-api-node');
+const spotify = require('./datahandler/spotify')
 
-// SPOTIFY SNIPPETS - TODO: MOVE OUT OF index.js
-var spotifyApi = new SpotifyWebApi({
-    clientId: process.env.SPOTIFY_CLIENT_ID,
-    clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-});
-
-// CLIENT CREDENTIAL FLOW - TODO: MOVE OUT OF index.js
-spotifyApi.clientCredentialsGrant()
-    .then(
-        function(data) {
-            console.log('The access token expires in ' + data.body['expires_in']);
-            console.log('The access token is ' + data.body['access_token']);
-        
-            // Save the access token so that it's used in future calls
-            spotifyApi.setAccessToken(data.body['access_token']);
-        },
-        function(err) {
-            console.log('Something went wrong when retrieving an access token', err);
-        }
-    )
-    .then(
-        function() {
-            spotifyApi.searchTracks('MONEY', { limit: 3 }) //Limit to top 3 results for bot
-                .then(function(data) {
-                    console.log(data);
-                    console.log('Search by "Money"', data.body);
-                }, function(err) {
-                    console.error(err);
-                });
-        }
-    );
+let main;
 
 // DYNAMODB SNIPPETS - TODO: MOVE OUT OF index.js
 const params = {
@@ -65,18 +35,6 @@ async function run() {
     }
 }
 run();
-
-// DISCORD EMBED MESSAGE TEMPLATE 
-const customEmbed = new MessageEmbed()
-    .setTitle('MONEY')
-    .setURL('https://open.spotify.com/track/7hU3IHwjX150XLoTVmjD0q') //Spotify Track URL
-    .setThumbnail('https://i.scdn.co/image/ab67616d0000b273330f11fb125bb80b760f9e19')
-    .setFields([
-        { name: 'Artist', value: 'LISA', inline: true },
-        { name: 'Album', value: 'LALISA', inline: true },
-		{ name: 'Song Duration', value: '2:48', inline: true },
-		{ name: 'Release Date', value: '2021-09-10', inline: true },
-    ]);
 
 // DISCORD BOT HANDLING
 const client = new Client({
@@ -113,12 +71,14 @@ client.on('messageCreate', async (message) => {
 	if (!command) return;
 
 	try {
-		await command.execute(message);
+		await command.execute(message, args, main);
 	} catch (error) {
 		console.error(error);
 		await message.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 	}
-
-    // msg.reply({embeds: [customEmbed]}); // TESTING EMBED MESSAGE TEMPLATE
 });
 
+main = {
+    spotify,
+    MessageEmbed
+}
