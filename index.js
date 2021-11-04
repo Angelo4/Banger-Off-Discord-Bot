@@ -36,6 +36,12 @@ async function run() {
 }
 run();
 
+const millisToMinutesAndSeconds = (millis) => {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+
 // DISCORD BOT HANDLING
 const client = new Client({
     intents: botIntents,
@@ -80,5 +86,6 @@ client.on('messageCreate', async (message) => {
 
 main = {
     spotify,
-    MessageEmbed
+    MessageEmbed,
+    millisToMinutesAndSeconds
 }
