@@ -1,6 +1,6 @@
 module.exports = {
-    name: 'ping pong',
-    execute(message) {
+    name: 'ping',
+    execute(message, args, main) {
         message.reply('Pong!');
     },
 };

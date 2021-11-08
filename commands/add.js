@@ -1,6 +1,6 @@
 module.exports = {
     name: '',
-    desription: '',
+    description: '',
     aliases: [],
     usage: '', //expected argument usage
     args: false,
