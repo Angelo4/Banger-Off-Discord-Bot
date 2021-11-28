@@ -21,6 +21,11 @@ module.exports = {
                 });
 
                 message.reply({embeds: trackEmbeddedMessages});
+            })
+            .catch((err) => {
+                //Look into error logging in the future
+                console.log(err);
+                message.reply("Sorry something went wrong while searching. Please try again later.");
             });
     },
 };
