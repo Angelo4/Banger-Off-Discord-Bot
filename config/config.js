@@ -4,12 +4,14 @@ const {
     DIRECT_MESSAGES,
     GUILD_MESSAGES,
     GUILDS,
+    GUILD_MESSAGE_REACTIONS,
 } = Intents.FLAGS;
 
 const botIntents = [
     DIRECT_MESSAGES,
     GUILD_MESSAGES,
     GUILDS,
+    GUILD_MESSAGE_REACTIONS,
 ];
 
 const prefix = 'bo!';
