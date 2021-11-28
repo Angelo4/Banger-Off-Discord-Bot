@@ -1,6 +1,6 @@
 module.exports = {
     name: 'search',
-    desription: 'Gets the top 3 results for a song without submitting to a poll.',
+    description: 'Gets the top 3 results for a song without submitting to a poll.',
     aliases: [],
     usage: '[Song Name and (optional) Artist]', 
     args: false,
@@ -15,8 +15,8 @@ module.exports = {
                         .setFields([
                             { name: 'Artist', value: track.artists[0].name, inline: true },
                             { name: 'Album', value: track.album.name, inline: true },
-                            { name: 'Song Duration', value: main.millisToMinutesAndSeconds(track.duration_ms), inline: true },
-                            { name: 'Release Date', value: track.album.release_date, inline: true },
+                            { name: 'Duration', value: main.millisToMinutesAndSeconds(track.duration_ms)},
+                            { name: 'Release Date', value: track.album.release_date },
                         ]);
                 });
 

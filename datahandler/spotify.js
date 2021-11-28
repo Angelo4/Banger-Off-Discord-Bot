@@ -6,8 +6,8 @@ var spotifyApi = new SpotifyWebApi({
     clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
 });
 
-function setAccessToken() {
-    spotifyApi.clientCredentialsGrant()
+async function setAccessToken() {
+    return spotifyApi.clientCredentialsGrant()
         .then((data) => {
             console.log('Spotify Access Token: ' + data.body['access_token']);
             spotifyApi.setAccessToken(data.body['access_token']);
@@ -17,16 +17,14 @@ function setAccessToken() {
         });
 }
 
-const searchTrack = (query) => {
+const searchTrack = async (query) => {
+    await setAccessToken();
     return spotifyApi.searchTracks(query, { limit: 3 }) //Limit to top 3 results for bot
         .then((data) => {
             return data.body.tracks.items;
         })
         .catch((err) => {
-            if (err.statusCode === 401) {
-                setAccessToken();
-                return searchTrack(query);
-            }
+            console.log(err);
         });
 }
 
