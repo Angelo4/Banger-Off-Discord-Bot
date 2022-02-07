@@ -22,8 +22,8 @@ module.exports = {
 
                 message.reply({content: 'Please confirm your song submission', embeds: trackEmbeddedMessages})
                     .then((message) => {
-                        message.react('👍')
-                        message.react('👎')                    
+                        message.react('✅')
+                        message.react('❌')                    
                     });
             })
             .catch((err) => {
