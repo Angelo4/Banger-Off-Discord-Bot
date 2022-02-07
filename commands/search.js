@@ -5,7 +5,7 @@ module.exports = {
     usage: '[Song Name and (optional) Artist]', 
     args: false,
     execute(message, args, main) {
-        main.spotify.searchTrack(args.join(' '))
+        main.spotify.searchTrack(args.join(' '), 3)
             .then((tracks) => {
                 var trackEmbeddedMessages = tracks.map((track) => {
                     return new main.MessageEmbed()

@@ -17,9 +17,9 @@ async function setAccessToken() {
         });
 }
 
-const searchTrack = async (query) => {
+const searchTrack = async (query, limit) => {
     await setAccessToken();
-    return spotifyApi.searchTracks(query, { limit: 3 }) //Limit to top 3 results for bot
+    return spotifyApi.searchTracks(query, { limit: limit }) 
         .then((data) => {
             return data.body.tracks.items;
         })
