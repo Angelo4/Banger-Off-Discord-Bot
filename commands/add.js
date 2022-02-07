@@ -20,7 +20,11 @@ module.exports = {
                         ]);
                 });
 
-                message.reply({embeds: trackEmbeddedMessages});
+                message.reply({content: 'Please confirm your song submission', embeds: trackEmbeddedMessages})
+                    .then((message) => {
+                        message.react('👍')
+                        message.react('👎')                    
+                    });
             })
             .catch((err) => {
                 //Look into error logging in the future
