@@ -20,10 +20,25 @@ module.exports = {
                         ]);
                 });
 
+                const senderId = message.author.id;
+                const filter = (reaction, user) => {
+                    return ['✅', '❌'].includes(reaction.emoji.name) && user.id === senderId;
+                };
+
                 message.reply({content: 'Please confirm your song submission', embeds: trackEmbeddedMessages})
                     .then((message) => {
                         message.react('✅')
-                        message.react('❌')                    
+                        message.react('❌') 
+                        message.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
+                            .then(collected => {
+                                const reaction = collected.first();
+
+                                if (reaction.emoji.name === '✅') {
+                                    message.reply('You have confirmed your submission');
+                                } else {
+                                    message.reply('You reacted with a thumbs down.');
+                                }
+                            });                  
                     });
             })
             .catch((err) => {
