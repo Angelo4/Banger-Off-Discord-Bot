@@ -5,14 +5,9 @@ const fs = require('fs');
 const config = require('./config/default.js');
 const dynamodb = require('./datahandler/ddbClient.js');
 const spotify = require('./datahandler/spotify')
+const utils = require('./utils/helper.js');
 
 let main;
-
-const millisToMinutesAndSeconds = (millis) => {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-}
 
 // DISCORD BOT HANDLING
 const client = new Client({
@@ -60,5 +55,5 @@ main = {
     spotify,
     dynamodb,
     MessageEmbed,
-    millisToMinutesAndSeconds
+    utils
 }

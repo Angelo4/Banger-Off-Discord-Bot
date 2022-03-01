@@ -15,7 +15,7 @@ module.exports = {
                         .setFields([
                             { name: 'Artist', value: track.artists[0].name, inline: true },
                             { name: 'Album', value: track.album.name, inline: true },
-                            { name: 'Duration', value: main.millisToMinutesAndSeconds(track.duration_ms)},
+                            { name: 'Duration', value: main.utils.millisToMinutesAndSeconds(track.duration_ms)},
                             { name: 'Release Date', value: track.album.release_date },
                         ]);
                 });
