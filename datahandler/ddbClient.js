@@ -1,9 +1,9 @@
 const { DynamoDBClient, UpdateItemCommand, ScanCommand } = require('@aws-sdk/client-dynamodb');
 
-const REGION = "ap-southeast-2"; 
+const REGION = "ap-southeast-2";
 const DYNAMODB_TABLE = "BangerOff";
 
-const ddbClient = new DynamoDBClient({ 
+const ddbClient = new DynamoDBClient({
     region: REGION,
     credentials: {
         accessKeyId: process.env.AWS_ACCESS_ID_KEY,
@@ -19,24 +19,24 @@ const addSongToActivePoll = async (guildId, spotifyTrack) => {
     const params = {
         TableName: DYNAMODB_TABLE,
         Key: {
-            GuildID: {S: guildId}
+            GuildID: { S: guildId }
         },
-        ExpressionAttributeValues: { 
-            ":song": {S: spotifyTrack.name}
+        ExpressionAttributeValues: {
+            ":song": { S: spotifyTrack.name }
         },
         UpdateExpression: "SET SongName = :song"
     };
 
     try {
         const command = new UpdateItemCommand(params);
-        const result = await ddbClient.send(command);   
+        const result = await ddbClient.send(command);
 
-        if (result.httpStatusCode == 200){
+        if (result.httpStatusCode == 200) {
             return true;
         } else {
             return false;
         }
-    } catch (err){
+    } catch (err) {
         console.log("Error", err);
     }
 }
