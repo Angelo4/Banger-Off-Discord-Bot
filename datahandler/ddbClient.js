@@ -11,14 +11,18 @@ const ddbClient = new DynamoDBClient({
     }
 });
 
-const addSongToActivePoll = async (guildId, songName) => {
+const ping = () => {
+    console.log("PING DYNAMODB");
+}
+
+const addSongToActivePoll = async (guildId, spotifyTrack) => {
     const params = {
         TableName: DYNAMODB_TABLE,
         Key: {
-            GuildID: {N: guildId}
+            GuildID: {S: guildId}
         },
         ExpressionAttributeValues: { 
-            ":song": {S: songname}
+            ":song": {S: spotifyTrack.name}
         },
         UpdateExpression: "SET SongName = :song"
     };
@@ -37,32 +41,7 @@ const addSongToActivePoll = async (guildId, songName) => {
     }
 }
 
-const run = async () => {
-    const params = {
-        // Specify which items in the results are returned.
-        FilterExpression: "FirstName = :F AND LastName = :L",
-        // Define the expression attribute value, which are substitutes for the values you want to compare.
-        ExpressionAttributeValues: {
-          ":F": { S: "Angelo" },
-          ":L": { S: "Alcantara" },
-        },
-        // Set the projection expression, which the the attributes that you want.
-        ProjectionExpression: "FirstName, LastName, SongName",
-        TableName: "Test",
-    };
-    
-    try {
-        const data = await ddbClient.send(new ScanCommand(params));
-        data.Items.forEach(function (element, index, array) {
-            console.log(element);
-            return data;
-        });
-    } catch (err) {
-        console.log("Error", err);
-    }
-}
-
 module.exports = {
-    run,
+    ping,
     addSongToActivePoll
 };

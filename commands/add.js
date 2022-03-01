@@ -34,6 +34,7 @@ module.exports = {
                                 const reaction = collected.first();
 
                                 if (reaction.emoji.name === '✅') {
+                                    main.dynamodb.addSongToActivePoll(message.channelId, tracks[0]);
                                     message.reply('You have confirmed your submission');
                                 } else {
                                     message.reply('You reacted with a thumbs down.');
