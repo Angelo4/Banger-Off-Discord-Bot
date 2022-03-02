@@ -17,17 +17,26 @@ const ping = () => {
     console.log("PING DYNAMODB");
 }
 
-const addSongToActivePoll = async (guildId, spotifyTrack) => {
+const addSongToActivePoll = async (guildId, authorId, spotifyTrack) => {
+    let submission = {
+        spotifyTrack: spotifyTrack,
+        submissionDetail: {
+            discordUserId: authorId,
+            voteCount: 0
+        }
+    };
+
     const params = {
         TableName: DYNAMODB_TABLE,
         Key: {
             GuildID: { S: guildId }
         },
-        ExpressionAttributeNames: { "#S": "songer" },
+        ExpressionAttributeNames: { "#activePoll": "activePoll" },
         ExpressionAttributeValues: {
-            ":song": { M: marshall(spotifyTrack) }
+            ":empty_list": { L: [] },
+            ":submission": { L: [{ M: marshall(submission) }] }
         },
-        UpdateExpression: "SET #S = :song"
+        UpdateExpression: "SET #activePoll = list_append(if_not_exists(#activePoll, :empty_list), :submission)"
     };
 
     try {
