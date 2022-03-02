@@ -34,8 +34,12 @@ module.exports = {
                                 const reaction = collected.first();
 
                                 if (reaction.emoji.name === '✅') {
-                                    main.dynamodb.addSongToActivePoll(message.channelId, senderId, tracks[0]);
-                                    message.reply('You have confirmed your banger.');
+                                    let result = main.dynamodb.addSongToActivePoll(message.channelId, senderId, tracks[0]);
+                                    if (result){
+                                        message.reply('You have confirmed your banger.');
+                                    } else {
+                                        message.reply('Sorry something went wrong while adding banger. Please try again later.')
+                                    }
                                 } else {
                                     message.reply('This song will not be submited as a banger.');
                                 }
@@ -48,7 +52,7 @@ module.exports = {
             .catch((err) => {
                 //Look into error logging in the future
                 console.log(err);
-                message.reply("Sorry something went wrong while searching. Please try again later.");
+                message.reply('Sorry something went wrong while adding banger. Please try again later.');
             });
     },
 };
