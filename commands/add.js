@@ -35,9 +35,9 @@ module.exports = {
 
                                 if (reaction.emoji.name === '✅') {
                                     main.dynamodb.addSongToActivePoll(message.channelId, senderId, tracks[0]);
-                                    message.reply('You have confirmed your submission');
+                                    message.reply('You have confirmed your banger.');
                                 } else {
-                                    message.reply('You reacted with a thumbs down.');
+                                    message.reply('This song will not be submited as a banger.');
                                 }
                             })
                             .catch((err) => {
