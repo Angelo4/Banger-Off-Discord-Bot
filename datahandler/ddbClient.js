@@ -1,4 +1,5 @@
-const { DynamoDBClient, UpdateItemCommand, ScanCommand } = require('@aws-sdk/client-dynamodb');
+const { DynamoDBClient, UpdateItemCommand } = require('@aws-sdk/client-dynamodb');
+const { marshall } = require("@aws-sdk/util-dynamodb");
 
 const REGION = "ap-southeast-2";
 const DYNAMODB_TABLE = "BangerOff";
@@ -8,7 +9,8 @@ const ddbClient = new DynamoDBClient({
     credentials: {
         accessKeyId: process.env.AWS_ACCESS_ID_KEY,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    }
+    },
+
 });
 
 const ping = () => {
@@ -21,10 +23,11 @@ const addSongToActivePoll = async (guildId, spotifyTrack) => {
         Key: {
             GuildID: { S: guildId }
         },
+        ExpressionAttributeNames: { "#S": "songer" },
         ExpressionAttributeValues: {
-            ":song": { S: spotifyTrack.name }
+            ":song": { M: marshall(spotifyTrack) }
         },
-        UpdateExpression: "SET SongName = :song"
+        UpdateExpression: "SET #S = :song"
     };
 
     try {
