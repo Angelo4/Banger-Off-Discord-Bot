@@ -25,7 +25,7 @@ module.exports = {
             .catch((err) => {
                 //Look into error logging in the future
                 console.log(err);
-                message.reply("Sorry something went wrong while searching. Please try again later.");
+                message.reply('Sorry something went wrong while searching. Please try again later.');
             });
     },
 };

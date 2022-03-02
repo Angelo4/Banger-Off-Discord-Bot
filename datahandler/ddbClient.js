@@ -1,8 +1,8 @@
 const { DynamoDBClient, UpdateItemCommand } = require('@aws-sdk/client-dynamodb');
-const { marshall } = require("@aws-sdk/util-dynamodb");
+const { marshall } = require('@aws-sdk/util-dynamodb');
 
-const REGION = "ap-southeast-2";
-const DYNAMODB_TABLE = "BangerOff";
+const REGION = 'ap-southeast-2';
+const DYNAMODB_TABLE = 'BangerOff';
 
 const ddbClient = new DynamoDBClient({
     region: REGION,
@@ -14,7 +14,7 @@ const ddbClient = new DynamoDBClient({
 });
 
 const ping = () => {
-    console.log("PING DYNAMODB");
+    console.log('PING DYNAMODB');
 }
 
 const addSongToActivePoll = async (guildId, authorId, spotifyTrack) => {
@@ -31,12 +31,12 @@ const addSongToActivePoll = async (guildId, authorId, spotifyTrack) => {
         Key: {
             GuildID: { S: guildId }
         },
-        ExpressionAttributeNames: { "#activePoll": "activePoll" },
+        ExpressionAttributeNames: { '#activePoll': 'activePoll' },
         ExpressionAttributeValues: {
-            ":empty_list": { L: [] },
-            ":submission": { L: [{ M: marshall(submission) }] }
+            ':empty_list': { L: [] },
+            ':submission': { L: [{ M: marshall(submission) }] }
         },
-        UpdateExpression: "SET #activePoll = list_append(if_not_exists(#activePoll, :empty_list), :submission)"
+        UpdateExpression: 'SET #activePoll = list_append(if_not_exists(#activePoll, :empty_list), :submission)'
     };
 
     try {
@@ -49,7 +49,7 @@ const addSongToActivePoll = async (guildId, authorId, spotifyTrack) => {
             return false;
         }
     } catch (err) {
-        console.log("Error", err);
+        console.log('Error', err);
     }
 }
 
