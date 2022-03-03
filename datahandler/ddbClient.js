@@ -1,5 +1,5 @@
-const { DynamoDBClient, UpdateItemCommand } = require('@aws-sdk/client-dynamodb');
-const { marshall } = require('@aws-sdk/util-dynamodb');
+const { DynamoDBClient, UpdateItemCommand, GetItemCommand } = require('@aws-sdk/client-dynamodb');
+const { marshall, unmarshall } = require('@aws-sdk/util-dynamodb');
 
 const REGION = 'ap-southeast-2';
 const DYNAMODB_TABLE = 'BangerOff';
@@ -53,7 +53,39 @@ const addSongToActivePoll = async (guildId, authorId, spotifyTrack) => {
     }
 }
 
+const getActivePoll = async (guildId) => {
+    const params = {
+        TableName: DYNAMODB_TABLE,
+        Key: {
+            GuildID: { S: guildId }
+        }
+    }
+
+    try {
+        const command = new GetItemCommand(params);
+        const result = await ddbClient.send(command);
+
+        if (result.Item) {
+            var bangerOffItem = unmarshall(result.Item);
+            return {
+                success: true,
+                message: "",
+                activePoll: bangerOffItem.activePoll
+            };
+        } else {
+            return {
+                success: false,
+                message: "There are no songs currently in the poll.",
+                activePoll: []
+            };
+        }
+    } catch (err) {
+        console.log('Error', err);
+    }
+}
+
 module.exports = {
     ping,
-    addSongToActivePoll
+    addSongToActivePoll,
+    getActivePoll
 };
