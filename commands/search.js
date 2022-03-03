@@ -1,3 +1,5 @@
+const { millisToMinutesAndSeconds } = require('../utils/helper');
+
 module.exports = {
     name: 'search',
     description: 'Gets the top 3 results for a song without submitting to a poll.',
@@ -15,7 +17,7 @@ module.exports = {
                         .setFields([
                             { name: 'Artist', value: track.artists[0].name, inline: true },
                             { name: 'Album', value: track.album.name, inline: true },
-                            { name: 'Duration', value: main.utils.millisToMinutesAndSeconds(track.duration_ms)},
+                            { name: 'Duration', value: millisToMinutesAndSeconds(track.duration_ms)},
                             { name: 'Release Date', value: track.album.release_date },
                         ]);
                 });

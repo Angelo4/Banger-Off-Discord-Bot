@@ -55,5 +55,4 @@ main = {
     spotify,
     dynamodb,
     MessageEmbed,
-    utils
 }
