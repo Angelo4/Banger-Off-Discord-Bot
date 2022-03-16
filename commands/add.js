@@ -1,60 +1,103 @@
-const { millisToMinutesAndSeconds } = require('../utils/helper');
+const { millisToMinutesAndSeconds } = require('../utils/helper')
 
 module.exports = {
     name: 'add',
     description: 'Adds the top result of a searched song to the active poll.',
     aliases: [],
-    usage: '[Song Name and (optional) Artist]', 
+    usage: '[Song Name and (optional) Artist]',
     args: false,
     execute(message, args, main) {
-        main.spotify.searchTrack(args.join(' '), 1)
+        main.spotify
+            .searchTrack(args.join(' '), 1)
             .then((tracks) => {
                 var trackEmbeddedMessages = tracks.map((track) => {
                     return new main.MessageEmbed()
                         .setTitle(track.name)
-                        .setURL(track.external_urls.spotify) 
+                        .setURL(track.external_urls.spotify)
                         .setThumbnail(track.album.images[0].url)
                         .setFields([
-                            { name: 'Artist', value: track.artists[0].name, inline: true },
-                            { name: 'Album', value: track.album.name, inline: true },
-                            { name: 'Duration', value: millisToMinutesAndSeconds(track.duration_ms)},
-                            { name: 'Release Date', value: track.album.release_date },
-                        ]);
-                });
+                            {
+                                name: 'Artist',
+                                value: track.artists[0].name,
+                                inline: true,
+                            },
+                            {
+                                name: 'Album',
+                                value: track.album.name,
+                                inline: true,
+                            },
+                            {
+                                name: 'Duration',
+                                value: millisToMinutesAndSeconds(
+                                    track.duration_ms
+                                ),
+                            },
+                            {
+                                name: 'Release Date',
+                                value: track.album.release_date,
+                            },
+                        ])
+                })
 
-                const senderId = message.author.id;
+                const senderId = message.author.id
                 const filter = (reaction, user) => {
-                    return ['✅', '❌'].includes(reaction.emoji.name) && user.id === senderId;
-                };
+                    return (
+                        ['✅', '❌'].includes(reaction.emoji.name) &&
+                        user.id === senderId
+                    )
+                }
 
-                message.reply({content: 'Please confirm your song submission', embeds: trackEmbeddedMessages})
+                message
+                    .reply({
+                        content: 'Please confirm your song submission',
+                        embeds: trackEmbeddedMessages,
+                    })
                     .then((message) => {
                         message.react('✅')
-                        message.react('❌') 
-                        message.awaitReactions({ filter, max: 1, time: 60000, errors: ['time'] })
-                            .then(collected => {
-                                const reaction = collected.first();
+                        message.react('❌')
+                        message
+                            .awaitReactions({
+                                filter,
+                                max: 1,
+                                time: 60000,
+                                errors: ['time'],
+                            })
+                            .then((collected) => {
+                                const reaction = collected.first()
 
                                 if (reaction.emoji.name === '✅') {
-                                    let result = main.dynamodb.addSongToActivePoll(message.channelId, senderId, tracks[0]);
-                                    if (result){
-                                        message.reply('You have confirmed your banger.');
+                                    let result =
+                                        main.dynamodb.addSongToActivePoll(
+                                            message.channelId,
+                                            senderId,
+                                            tracks[0]
+                                        )
+                                    if (result) {
+                                        message.reply(
+                                            'You have confirmed your banger.'
+                                        )
                                     } else {
-                                        message.reply('Sorry something went wrong while adding banger. Please try again later.')
+                                        message.reply(
+                                            'Sorry something went wrong while adding banger. Please try again later.'
+                                        )
                                     }
                                 } else {
-                                    message.reply('This song will not be submited as a banger.');
+                                    message.reply(
+                                        'This song will not be submited as a banger.'
+                                    )
                                 }
                             })
                             .catch((err) => {
-                                console.log(err);
-                            });                  
-                    });
+                                console.log(err)
+                            })
+                    })
             })
             .catch((err) => {
                 //Look into error logging in the future
-                console.log(err);
-                message.reply('Sorry something went wrong while adding banger. Please try again later.');
-            });
+                console.log(err)
+                message.reply(
+                    'Sorry something went wrong while adding banger. Please try again later.'
+                )
+            })
     },
-};
+}

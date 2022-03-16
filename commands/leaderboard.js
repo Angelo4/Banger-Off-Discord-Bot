@@ -7,4 +7,4 @@ module.exports = {
     execute(message) {
         //Write command execution logic here
     },
-};
+}

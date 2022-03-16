@@ -1,8 +1,12 @@
-const { DynamoDBClient, UpdateItemCommand, GetItemCommand } = require('@aws-sdk/client-dynamodb');
-const { marshall, unmarshall } = require('@aws-sdk/util-dynamodb');
+const {
+    DynamoDBClient,
+    UpdateItemCommand,
+    GetItemCommand,
+} = require('@aws-sdk/client-dynamodb')
+const { marshall, unmarshall } = require('@aws-sdk/util-dynamodb')
 
-const REGION = 'ap-southeast-2';
-const DYNAMODB_TABLE = 'BangerOff';
+const REGION = 'ap-southeast-2'
+const DYNAMODB_TABLE = 'BangerOff'
 
 const ddbClient = new DynamoDBClient({
     region: REGION,
@@ -10,11 +14,10 @@ const ddbClient = new DynamoDBClient({
         accessKeyId: process.env.AWS_ACCESS_ID_KEY,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     },
-
-});
+})
 
 const ping = () => {
-    console.log('PING DYNAMODB');
+    console.log('PING DYNAMODB')
 }
 
 const addSongToActivePoll = async (guildId, authorId, spotifyTrack) => {
@@ -22,34 +25,35 @@ const addSongToActivePoll = async (guildId, authorId, spotifyTrack) => {
         spotifyTrack: spotifyTrack,
         submissionDetail: {
             discordUserId: authorId,
-            voteCount: 0
-        }
-    };
+            voteCount: 0,
+        },
+    }
 
     const params = {
         TableName: DYNAMODB_TABLE,
         Key: {
-            GuildID: { S: guildId }
+            GuildID: { S: guildId },
         },
         ExpressionAttributeNames: { '#activePoll': 'activePoll' },
         ExpressionAttributeValues: {
             ':empty_list': { L: [] },
-            ':submission': { L: [{ M: marshall(submission) }] }
+            ':submission': { L: [{ M: marshall(submission) }] },
         },
-        UpdateExpression: 'SET #activePoll = list_append(if_not_exists(#activePoll, :empty_list), :submission)'
-    };
+        UpdateExpression:
+            'SET #activePoll = list_append(if_not_exists(#activePoll, :empty_list), :submission)',
+    }
 
     try {
-        const command = new UpdateItemCommand(params);
-        const result = await ddbClient.send(command);
+        const command = new UpdateItemCommand(params)
+        const result = await ddbClient.send(command)
 
         if (result.httpStatusCode == 200) {
-            return true;
+            return true
         } else {
-            return false;
+            return false
         }
     } catch (err) {
-        console.log('Error', err);
+        console.log('Error', err)
     }
 }
 
@@ -57,35 +61,35 @@ const getActivePoll = async (guildId) => {
     const params = {
         TableName: DYNAMODB_TABLE,
         Key: {
-            GuildID: { S: guildId }
-        }
+            GuildID: { S: guildId },
+        },
     }
 
     try {
-        const command = new GetItemCommand(params);
-        const result = await ddbClient.send(command);
+        const command = new GetItemCommand(params)
+        const result = await ddbClient.send(command)
 
         if (result.Item) {
-            var bangerOffItem = unmarshall(result.Item);
+            var bangerOffItem = unmarshall(result.Item)
             return {
                 success: true,
-                message: "",
-                activePoll: bangerOffItem.activePoll
-            };
+                message: '',
+                activePoll: bangerOffItem.activePoll,
+            }
         } else {
             return {
                 success: false,
-                message: "There are no songs currently in the poll.",
-                activePoll: []
-            };
+                message: 'There are no songs currently in the poll.',
+                activePoll: [],
+            }
         }
     } catch (err) {
-        console.log('Error', err);
+        console.log('Error', err)
     }
 }
 
 module.exports = {
     ping,
     addSongToActivePoll,
-    getActivePoll
-};
+    getActivePoll,
+}
